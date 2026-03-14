@@ -1,0 +1,44 @@
+# --- OS Specific Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- VS Code Files ---
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# --- Node / Web Dev (If applicable) ---
+node_modules/
+dist/
+build/
+.env
+
+# --- Python (If applicable) ---
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# --- Logs ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# --- other generated files / useless or testing ---
+analysis_output.md
+analysis_output.pdf
+memory.json
+data.json
+prompt_test.txt
