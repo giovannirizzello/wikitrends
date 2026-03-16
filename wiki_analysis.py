@@ -4,9 +4,7 @@ import requests
 from datetime import datetime
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
-from IPython.display import Markdown, display
 from pathlib import Path
-from fpdf import FPDF
 
 # LOAD API KEY
 load_dotenv()
@@ -78,12 +76,12 @@ def filter_data(data):
 formato_memoria = "Previous statistics and trends: {statistics} - Previous analysis and prediction: {analysis}"
 formato_prompt = """
 PROMPT\n
-Analyze this data, list the top 5 articles of the day, predict next day trends, and use memory to analyze trends over time. Reply shortly.\n
+Analyze this data, list the top 5 articles of the day, predict next day trends, and use memory to analyze trends over time. Response must be very short and brief, short enough to be shown in an application when the user opens a notification.\n
 
 reply to the user's prompt exclusively if the topic is wikipedia top articles, analysys and prediction of them, and anything related to those.
 
 INSTRUCTIONS\n
-the response MUST be in markdown. no json or html, ONLY MARKDOWN.\n
+the response MUST be in html. titles in <b>, top 5 in a list, prediction in a <p>, use <br> to add a break after each separate thing, for every article name, make it an URL with <a href=""> and this format https://en.wikipedia.org/wiki/(article name that you get from the json data). note that the data is from yesterday, so don't say today. make it user friendly (interesting and appealing to read) no json or markdown, ONLY HTML.\n
 
 DATA\n
 This is the latest statistics and data.\n
@@ -121,7 +119,7 @@ def invoke_analysis(statistics, memory_list, llm):
     )
 
     response = llm.invoke(prompt)
-    with open("analysis_output.md", "w", encoding="utf-8") as md_file:
+    with open("analysis_output.html", "w", encoding="utf-8") as md_file:
         md_file.write(response.content)
     return response.content
 
@@ -139,18 +137,6 @@ def save_to_memory(analysis_text, statistics):
 def save_prompt():
     with open("prompt_test.txt", "w") as f:
         f.write(prompt)
-
-def save_pdf(md_file):
-    with open(md_file, "r", encoding="utf-8") as f:
-        text = f.read()
-
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    
-    pdf.multi_cell(0, 10, txt=text)
-    
-    pdf.output("analysis_output.pdf")
 
 def run_analysis():
     read_memory()

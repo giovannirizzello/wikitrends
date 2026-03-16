@@ -38,6 +38,7 @@ yarn-error.log*
 
 # --- other generated files / useless or testing ---
 analysis_output.md
+analysis_output.html
 analysis_output.pdf
 memory.json
 data.json
