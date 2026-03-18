@@ -60,4 +60,7 @@ print("Message sent")
 with open("templates/index.html", "w") as indexfile:
     indexfile.write(gen_index(analysis_text, llm))
 
+with open("templates/long.html", "w") as longfile:
+    longfile.write(gen_index_long(clean_stats, llm))
+
 web_serve.run_server(port=5000)

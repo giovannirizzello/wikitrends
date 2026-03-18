@@ -81,6 +81,16 @@ DATA SOURCE:
 {data_source}
 """
 
+long_format = """
+Based on the following data, generate a clean HTML <div> containing a long summary 
+of the top 30 trending Wiki articles and an in depth analysis with prediction of future trends in a separate div under the main one.
+Use <h3> for the title and a <ul> for the list. 
+Response must contain ONLY the HTML <div> code, nothing else.
+
+DATA SOURCE:
+{data_source_long}
+"""
+
 formato_prompt = """
 PROMPT\n
 Analyze this data, list the top 5 articles of the day, predict next day trends, and use memory to analyze trends over time. Response must be very short and brief, short enough to be shown in an application when the user opens a notification.\n
@@ -137,6 +147,142 @@ def gen_telegram_msg(source, llm):
 
     response = llm.invoke(prompt)
     return response.content
+
+def gen_index_long(source, llm):
+    INDEX_SHELL = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WikiTrends</title>
+    <style>
+        :root {{
+            --primary: #0088cc; /* Telegram Blue */
+            --bg: #f4f7f6;
+            --text: #333;
+            --white: #ffffff;
+        }}
+
+        body {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }}
+
+        nav {{
+            width: 100%;
+            background: var(--white);
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 2rem;
+        }}
+
+        nav a {{
+            text-decoration: none;
+            color: var(--text);
+            margin: 0 15px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }}
+
+        nav a:hover {{
+            color: var(--primary);
+        }}
+
+        .container {{
+            width: 90%;
+            max-width: 800px;
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }}
+
+        h1 {{
+            color: var(--primary);
+            text-align: center;
+            margin-top: 0;
+        }}
+
+        /* Styling for the LLM's generated content */
+        .analysis-content h3 {{
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 10px;
+            color: var(--primary);
+        }}
+
+        ul {{
+            list-style: none;
+            padding: 0;
+        }}
+
+        li {{
+            background: var(--bg);
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }}
+
+        li:hover {{
+            transform: translateX(5px);
+        }}
+
+        a {{
+            color: var(--primary);
+            text-decoration: none;
+        }}
+
+        footer {{
+            margin-top: auto;
+            padding: 2rem;
+            color: #888;
+            font-size: 0.9rem;
+        }}
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/long">Long Version</a>
+        <a href="/short">Short Version</a>
+        <a href="/subscribe">Telegram Bot</a>
+    </nav>
+
+    <div class="container">
+        <h1>WikiTrends</h1>
+        <div class="analysis-content">
+            {dynamic_content}
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 WikiTrends • Data from Wikipedia API
+    </footer>
+
+</body>
+</html>
+    """
+
+
+    prompt = long_format.format(
+        data_source_long = source
+    )
+
+    response = llm.invoke(prompt)
+    snippet = response.content
+
+    full_html_long = INDEX_SHELL.format(dynamic_content=snippet)
+    return full_html_long
 
 
 def gen_index(source, llm):
@@ -244,6 +390,7 @@ def gen_index(source, llm):
 
     <nav>
         <a href="/">Home</a>
+        <a href="/long">Long Version</a>
         <a href="/short">Short Version</a>
         <a href="/subscribe">Telegram Bot</a>
     </nav>

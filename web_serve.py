@@ -18,6 +18,10 @@ def index():
 def short_page():
     return render_template('short.html')
 
+@app.route('/long')
+def long_page():
+    return render_template('long.html')
+
 @app.route('/subscribe')
 def subscribe_page():
     return render_template('subscribe.html')
