@@ -15,6 +15,7 @@ desktop.ini
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+.vscode/
 
 # --- Node / Web Dev (If applicable) ---
 node_modules/
@@ -44,3 +45,26 @@ memory.json
 data.json
 prompt_test.txt
 .python-version
+
+
+backend/analysis_output.md
+backend/analysis_output.html
+backend/analysis_output.pdf
+backend/memory.json
+backend/data.json
+backend/prompt_test.txt
+backend/.python-version
+
+backend/web/index.html
+
+backend/.vscode/*
+!backend/.vscode/settings.json
+!backend/.vscode/tasks.json
+!backend/.vscode/launch.json
+!backend/.vscode/extensions.json
+backend/*.code-workspace
+
+notifier_session.session
+users.db
+outputs/*
+outputs/

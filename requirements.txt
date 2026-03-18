@@ -1,6 +1,7 @@
-dotenv==0.9.9
-fpdf2==2.8.7
-ipython==9.11.0
-langchain==1.2.12
-langchain-ollama==1.0.1
-pytelegrambotapi==4.32.0
+dotenv
+ipython
+langchain
+langchain-ollama
+pyrogram
+tgcrypto
+flask

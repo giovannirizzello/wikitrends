@@ -6,15 +6,6 @@ from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 from pathlib import Path
 
-# LOAD API KEY
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
-if API_KEY:
-    print("Key loaded successfully!")
-else:
-    print("Did you put your api key in the .env?")
-
-
 #DEFINE LLM MODEL and API
 def define_llm(model_name, temperature, api_key, base_url):
     return init_chat_model(model_name, temperature=temperature, api_key=api_key, base_url=base_url)
@@ -73,7 +64,19 @@ def filter_data(data):
 
     return data
 
-formato_memoria = "Previous statistics and trends: {statistics} - Previous analysis and prediction: {analysis}"
+tg_msg_format = """
+rewrite this HTML code i'll give you in the right format for a readable and nice telegram message, content MUST be the same and output MUST NOT contain anything else.
+
+{html_input}
+
+"""
+
+index_page_format = """
+rewrite this data i'll give you in a more complete HTML page that will be the index of a website, it must also contain a navbar to navigate to the "Short Version" (/short) and to the "Subscribe to Telegram bot" page (/subscribe). copyright in page must be 2026, title must be WikiTrends. response must contain ONLY HTML, nothing else. NOTHING ELSE, JUST THE CODE.
+
+{data_source}
+"""
+
 formato_prompt = """
 PROMPT\n
 Analyze this data, list the top 5 articles of the day, predict next day trends, and use memory to analyze trends over time. Response must be very short and brief, short enough to be shown in an application when the user opens a notification.\n
@@ -123,6 +126,25 @@ def invoke_analysis(statistics, memory_list, llm):
         md_file.write(response.content)
     return response.content
 
+def gen_telegram_msg(source, llm):
+    prompt = tg_msg_format.format(
+        html_input = source
+    )
+
+    response = llm.invoke(prompt)
+    return response.content
+
+
+def gen_index(source, llm):
+    prompt = index_page_format.format(
+        data_source = source
+    )
+
+    response = llm.invoke(prompt)
+    return response.content
+
+
+
 def save_to_memory(analysis_text, statistics):
     new_entry = {
         "timestamp": datetime.today().strftime('%Y-%m-%d %H:%M:%S'),
@@ -134,18 +156,12 @@ def save_to_memory(analysis_text, statistics):
     with open("memory.json", "a") as f:
         f.write(json.dumps(new_entry) + "\n")
 
-def save_prompt():
-    with open("prompt_test.txt", "w") as f:
-        f.write(prompt)
-
 def run_analysis():
     read_memory()
     collect_data()
     filter_data()
     analysis_result = invoke_analysis()
     save_to_memory(analysis_result)
-    save_prompt()
-    save_pdf()
 
 if __name__ == "__main__":
     run_analysis()
