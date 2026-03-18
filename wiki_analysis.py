@@ -74,7 +74,7 @@ rewrite this HTML code i'll give you in the right format for a readable and nice
 index_page_format = """
 Based on the following data, generate a clean HTML <div> containing a summary 
 of the top trending Wiki articles and an in depth analysis with prediction of future trends in a separate div under the main one.
-Use <h3> for the title and a <ul> for the list. 
+Use <h3> for the title and a <ul> for the list. for every article name, make it an URL with <a href=""> and this format https://en.wikipedia.org/wiki/(article name that you get from the json data).
 Response must contain ONLY the HTML <div> code, nothing else.
 
 DATA SOURCE:
@@ -84,7 +84,7 @@ DATA SOURCE:
 long_format = """
 Based on the following data, generate a clean HTML <div> containing a long summary 
 of the top 30 trending Wiki articles and an in depth analysis with prediction of future trends in a separate div under the main one.
-Use <h3> for the title and a <ul> for the list. 
+Use <h3> for the title and a <ul> for the list. for every article name, make it an URL with <a href=""> and this format https://en.wikipedia.org/wiki/(article name that you get from the json data).
 Response must contain ONLY the HTML <div> code, nothing else.
 
 DATA SOURCE:
