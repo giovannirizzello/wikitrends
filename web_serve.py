@@ -34,4 +34,4 @@ def add_user():
 
 def run_server(port=5000):
     init_db()
-    app.run(debug=True, port=port, use_reloader=False)
+    app.run(debug=False, port=port, use_reloader=False)
