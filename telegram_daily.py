@@ -4,6 +4,11 @@ import os
 import dotenv
 import sqlite3
 
+def init_db():
+    with sqlite3.connect("users.db") as conn:
+        conn.execute("CREATE TABLE IF NOT EXISTS users (name TEXT, username TEXT)")
+        conn.commit()
+
 def get_all_users():
     with sqlite3.connect("users.db") as connection:
         cursor = connection.cursor()
@@ -34,6 +39,7 @@ async def send_notification(text, TG_API_ID, TG_API_HASH, BOT_TOKEN):
                 await asyncio.sleep(30)
 
 def notify(message):
+    init_db()
     dotenv.load_dotenv()
     TG_API_ID = os.getenv("TG_API_ID")
     TG_API_HASH = os.getenv("TG_API_HASH")
