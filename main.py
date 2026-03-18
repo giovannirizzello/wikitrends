@@ -32,7 +32,7 @@ print("Set date and url settings")
 
 # Move old output to archive
 file_actions.move_file("analysis_output.html", "outputs/analysis_output_" + before_yesterday.strftime('%Y-%m-%d') + ".html")
-print("Old outpud moved")
+print("Old output moved")
 
 # Analysis
 history = read_memory()
