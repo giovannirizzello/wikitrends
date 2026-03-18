@@ -1,4 +1,5 @@
 import sqlite3
+from telegram_daily import greet_new_user
 from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
@@ -30,6 +31,8 @@ def add_user():
         conn.execute("INSERT INTO users VALUES (?, ?)", (name, username))
         conn.commit()
     
+    greet_new_user(name, username)
+
     return redirect('/')
 
 def run_server(port=5000):

@@ -38,6 +38,26 @@ async def send_notification(text, TG_API_ID, TG_API_HASH, BOT_TOKEN):
             if i + 30 < len(usernames):
                 await asyncio.sleep(30)
 
+async def send_notification_greet(name, TG_API_ID, TG_API_HASH, BOT_TOKEN, user):
+    async with Client("notifier_session", api_id=TG_API_ID, api_hash=TG_API_HASH, bot_token=BOT_TOKEN) as app:
+        await app.send_message(user.lstrip('@'), "Hey " + name + "!\n\n" + "You're now subscribed to daily updates. See you when the next analysis is ready!")
+
+
+
+def greet_new_user(name, username):
+    dotenv.load_dotenv()
+    TG_API_ID = os.getenv("TG_API_ID")
+    TG_API_HASH = os.getenv("TG_API_HASH")
+    BOT_TOKEN = os.getenv("BOT_TOKEN")
+    USER_ID = os.getenv("USER_ID")
+
+    if TG_API_ID and TG_API_HASH and BOT_TOKEN and USER_ID:
+        print("Telegram credentials loaded!")
+    else:
+        print("Did you put your telegram credentials in the .env?")
+
+    asyncio.run(send_notification_greet(name, TG_API_ID, TG_API_HASH, BOT_TOKEN, username))
+
 def notify(message):
     init_db()
     dotenv.load_dotenv()
