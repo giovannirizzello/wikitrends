@@ -68,3 +68,5 @@ notifier_session.session
 users.db
 outputs/*
 outputs/
+templates/index.html
+templates/short.html

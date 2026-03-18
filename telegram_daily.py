@@ -26,7 +26,7 @@ async def send_notification(text, TG_API_ID, TG_API_HASH, BOT_TOKEN):
             for username in batch:
                 try:
                     # if user wrote @ while subscribing, remove it (not needed)
-                    await app.send_message(username.lstrip('@'), text)
+                    await app.send_message(username.lstrip('@'), "Hi " + username.lstrip('@') + "!\n\n" + text)
                     print(f"Message sent to {username}")
                 except Exception as e:
                     print(f"Could not send to {username}: {e}")
